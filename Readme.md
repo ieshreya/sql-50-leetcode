@@ -10,7 +10,6 @@ FROM Products
 WHERE low_fats = 'Y'
 AND recyclable = 'Y'
 ```
----
 
 584 - Find Customer Referee
 ```sql
