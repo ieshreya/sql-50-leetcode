@@ -67,6 +67,50 @@ WHERE visit_id NOT IN (SELECT DISTINCT visit_id FROM Transactions)
 GROUP BY customer_id
 ```
 
+197. Rising Temperature 
+```sql
+SELECT w1.id 
+FROM Weather w1, Weather w2
+WHERE DATEDIFF(w1.recordDate, w2.recordDate) = 1
+AND w1.temperature > w2.temperature
 
+-- OR
+SELECT w1.id
+FROM Weather w1, Weather w2
+WHERE w1.temperature > w2.temperature
+AND SUBDATE(w1.recordDate, 1) = w2.recordDate
+```
 
+1661. Average Time of Process per Machine
+```sql
+SELECT machine_id, ROUND(AVG(end - start), 3) AS processing_time
+FROM 
+(SELECT machine_id, process_id, 
+    MAX(CASE WHEN activity_type = 'start' THEN timestamp END) AS start,
+    MAX(CASE WHEN activity_type = 'end' THEN timestamp END) AS end
+ FROM Activity 
+  GROUP BY machine_id, process_id) AS subq
+GROUP BY machine_id
+```
 
+577. Employee Bonus
+```sql
+SELECT name, bonus
+FROM Employee e
+LEFT JOIN Bonus b
+ON e.empId = b.empId
+WHERE bonus < 1000
+OR bonus IS NULL
+```
+
+1280. Students and Examinations
+```sql
+SELECT a.student_id, a.student_name, b.subject_name, COUNT(c.subject_name) AS attended_exams
+FROM Students a
+JOIN Subjects b
+LEFT JOIN Examinations c
+ON a.student_id = c.student_id
+AND b.subject_name = c.subject_name
+GROUP BY 1, 3
+ORDER BY 1, 3 
+```
