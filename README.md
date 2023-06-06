@@ -132,3 +132,8 @@ WHERE a.id = b.managerId
 GROUP BY b.managerId
 HAVING COUNT(*) >= 5
 ```
+
+[1934. Confirmation Rate](https://leetcode.com/problems/confirmation-rate/)
+```sql
+
+```
