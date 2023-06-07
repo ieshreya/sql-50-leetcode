@@ -135,5 +135,49 @@ HAVING COUNT(*) >= 5
 
 [1934. Confirmation Rate](https://leetcode.com/problems/confirmation-rate/)
 ```sql
+SELECT 
+  s.user_id, 
+  ROUND(
+    COALESCE(
+      SUM(
+        CASE WHEN ACTION = 'confirmed' THEN 1 END
+      ) / COUNT(*), 0),2) 
+  AS confirmation_rate 
+FROM Signups s 
+LEFT JOIN Confirmations c 
+ON s.user_id = c.user_id 
+GROUP BY s.user_id;  
+```
+
+[620. Not Boring Movies](https://leetcode.com/problems/not-boring-movies)
+```sql
+-- odd id, "boring", rating desc
+SELECT *
+FROM Cinema
+WHERE id % 2 <> 0 
+AND description <> "boring"
+ORDER BY rating DESC
+```
+
+[1251. Average Selling Price](https://leetcode.com/problems/average-selling-price/)
+```sql
+-- avg(selling), round 2
+SELECT p.product_id, 
+  ROUND(SUM(price * units) / SUM(units), 2) AS average_price
+FROM Prices p
+LEFT JOIN UnitsSold s
+ON p.product_id = s.product_id
+AND purchase_date BETWEEN start_date AND end_date
+GROUP BY p.product_id
+```
+
+[1075. Project Employees I](https://leetcode.com/problems/project-employees-i)
+```sql
+-- avg(exp_yr), round 2, by project
+SELECT project_id, ROUND(AVG(experience_years), 2) average_years
+FROM Project p 
+LEFT JOIN Employee e
+ON p.employee_id = e.employee_id
+GROUP BY project_id
 
 ```
