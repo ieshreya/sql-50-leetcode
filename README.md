@@ -179,5 +179,39 @@ FROM Project p
 LEFT JOIN Employee e
 ON p.employee_id = e.employee_id
 GROUP BY project_id
+```
+
+[1633. Percentage of Users Attended a Contest](https://leetcode.com/problems/percentage-of-users-attended-a-contest)
+```sql
+-- % desc, contest_id asc, round 2
+SELECT r.contest_id,
+       ROUND(COUNT(DISTINCT r.user_id) * 100 / (SELECT COUNT(DISTINCT user_id) FROM Users), 2) AS percentage
+FROM Register r
+GROUP BY r.contest_id
+ORDER BY percentage DESC, r.contest_id ASC;
+```
+
+[1211 Queries Quality and Percentage](https://leetcode.com/problems/queries-quality-and-percentage)
+
+```sql
+--quality - avg(rating/position), poor query % - %(rating < 3), round 2
+SELECT query_name, 
+    ROUND(AVG(rating/position), 2) AS quality, 
+    ROUND(SUM(IF(rating < 3, 1, 0)) * 100/ COUNT(rating), 2) AS poor_query_percentage
+FROM Queries
+GROUP BY query_name
+
+-- OR
+SELECT query_name, 
+    ROUND(AVG(rating/position), 2) AS quality, 
+    ROUND(SUM(
+        CASE WHEN rating < 3 THEN 1 ELSE 0 END
+    ) * 100/ COUNT(rating), 2) AS poor_query_percentage
+FROM Queries
+GROUP BY query_name
+```
+
+[1193. Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i/)
+```sql
 
 ```
