@@ -213,5 +213,46 @@ GROUP BY query_name
 
 [1193. Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i/)
 ```sql
+-- month, country, count(trans), total(amt), count(approved_trans), total(amt)
+SELECT DATE_FORMAT(trans_date, '%Y-%m') month, country, 
+        COUNT(state) trans_count, 
+        SUM(IF(state = 'approved', 1, 0)) approved_count, 
+        SUM(amount) trans_total_amount,
+        SUM(IF(state = 'approved', amount, 0)) approved_total_amount
+FROM Transactions
+GROUP BY 1, 2
 
+-- OR
+SELECT DATE_FORMAT(trans_date, '%Y-%m') month, country, 
+        COUNT(state) trans_count, 
+        SUM(CASE WHEN state = 'approved' THEN 1 ELSE 0 END) approved_count, 
+        SUM(amount) trans_total_amount,
+        SUM(CASE WHEN state = 'approved' THEN amount ELSE 0 END) approved_total_amount
+FROM Transactions
+GROUP BY 1, 2
 ```
+
+[1174. Immediate Food Delivery II](https://leetcode.com/problems/immediate-food-delivery-ii/)
+```sql
+SELECT
+    ROUND((COUNT(CASE WHEN d.order_date = d.customer_pref_delivery_date THEN 1 END) / COUNT(*)) * 100, 2)  immediate_percentage
+FROM Delivery d
+WHERE d.order_date = (
+    SELECT
+    MIN(order_date)
+    FROM Delivery
+    WHERE customer_id = d.customer_id
+    );
+
+-- OR
+SELECT ROUND(AVG(temp.order_date=temp.customer_pref_delivery_date) * 100, 2) immediate_percentage
+FROM (
+    SELECT *, RANK() OVER(partition by customer_id ORDER BY order_date) od
+    FROM Delivery) temp
+WHERE temp.od = 1
+```
+
+<!-- [550. Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv/)
+```sql
+
+``` -->
