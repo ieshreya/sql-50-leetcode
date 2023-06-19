@@ -308,3 +308,53 @@ JOIN Sales s
 ON f.product_id = s.product_id
 AND f.first_year = s.year
 ```
+
+[596. Classes More Than 5 Students](https://leetcode.com/problems/classes-more-than-5-students/)
+```sql
+SELECT class
+FROM Courses
+GROUP BY class
+HAVING COUNT(student) >= 5
+```
+
+[1729. Find Followers Count](https://leetcode.com/problems/find-followers-count/)
+```sql
+SELECT user_id, COUNT(DISTINCT follower_id) AS followers_count
+FROM Followers
+GROUP BY user_id
+ORDER BY user_id ASC
+```
+
+[619. Biggest Single Number](https://leetcode.com/problems/biggest-single-number/)
+```sql
+SELECT COALESCE(
+  (SELECT num
+  FROM MyNumbers
+  GROUP BY num
+  HAVING COUNT(num) = 1
+  ORDER BY num DESC
+  LIMIT 1), null) 
+  AS num
+```
+
+[1045. Customers Who Bought All Products](https://leetcode.com/problems/customers-who-bought-all-products/)
+```sql
+SELECT customer_id
+FROM Customer
+GROUP BY customer_id
+HAVING COUNT(DISTINCT product_key) = (
+  SELECT COUNT(product_key)
+  FROM Product
+)
+```
+[1731. The Number of Employees Which Report to Each Employee
+](https://leetcode.com/problems/the-number-of-employees-which-report-to-each-employee/)
+
+```sql
+SELECT e1.employee_id, e1.name, COUNT(e2.employee_id) reports_count, ROUND(AVG(e2.age)) average_age 
+FROM Employees e1, Employees e2
+WHERE e1.employee_id = e2.reports_to
+GROUP BY e1.employee_id
+HAVING reports_count > 0
+ORDER BY e1.employee_id
+```
