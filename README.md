@@ -252,7 +252,59 @@ FROM (
 WHERE temp.od = 1
 ```
 
-<!-- [550. Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv/)
+[550. Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv/)
 ```sql
+WITH login_date AS (SELECT player_id, MIN(event_date) AS first_login
+FROM Activity
+GROUP BY player_id),
 
-``` -->
+recent_login AS (
+SELECT *, DATE_ADD(first_login, INTERVAL 1 DAY) AS next_day
+FROM login_date)
+
+SELECT ROUND((SELECT COUNT(DISTINCT(player_id))
+FROM Activity
+WHERE (player_id, event_date) IN 
+(SELECT player_id, next_day FROM recent_login)) / (SELECT COUNT(DISTINCT player_id) FROM Activity), 2) AS fraction
+```
+[2356. Number of Unique Subjects Taught by Each Teacher](https://leetcode.com/problems/number-of-unique-subjects-taught-by-each-teacher)
+```sql
+SELECT teacher_id, COUNT(DISTINCT subject_id) cnt
+FROM Teacher
+GROUP BY teacher_id
+```
+
+[1141. User Activity for the Past 30 Days I](https://leetcode.com/problems/user-activity-for-the-past-30-days-i/)
+```sql
+SELECT activity_date as day, COUNT(DISTINCT user_id) AS active_users
+FROM Activity
+WHERE activity_date BETWEEN DATE_SUB('2019-07-27', INTERVAL 29 DAY) AND '2019-07-27'
+GROUP BY activity_date
+```
+
+[1070. Product Sales Analysis III
+](https://leetcode.com/problems/product-sales-analysis-iii/)
+```sql
+SELECT s.product_id, s.year AS first_year, s.quantity, s.price
+FROM Sales s
+JOIN (
+  SELECT product_id, MIN(year) AS year 
+  FROM sales 
+  GROUP BY product_id
+  ) p
+ON s.product_id = p.product_id
+AND s.year = p.year
+
+-- OR
+WITH first_year_sales AS (
+  SELECT s.product_id, MIN(s.year) as first_year
+  FROM Sales s
+  INNER JOIN Product p
+  ON s.product_id = p.product_id
+  GROUP BY s.product_id)
+SELECT f.product_id, f.first_year, s.quantity, s.price
+FROM first_year_sales f
+JOIN Sales s 
+ON f.product_id = s.product_id
+AND f.first_year = s.year
+```
