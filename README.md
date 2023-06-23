@@ -358,3 +358,25 @@ GROUP BY e1.employee_id
 HAVING reports_count > 0
 ORDER BY e1.employee_id
 ```
+[1789. Primary Department for Each Employee
+](https://leetcode.com/problems/primary-department-for-each-employee/?envType=study-plan-v2&envId=top-sql-50)
+```sql
+SELECT employee_id, department_id
+FROM Employee 
+WHERE primary_flag = 'Y'
+UNION
+SELECT employee_id, department_id
+FROM Employee
+GROUP BY employee_id
+HAVING COUNT(employee_id)=1
+
+-- OR
+SELECT employee_id,department_id
+FROM Employee
+WHERE primary_flag = 'Y' OR employee_id IN
+    (SELECT employee_id
+     FROM employee
+     GROUP BY employee_id
+     HAVING COUNT(department_id) = 1
+    )
+```
