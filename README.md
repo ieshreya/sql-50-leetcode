@@ -380,3 +380,26 @@ WHERE primary_flag = 'Y' OR employee_id IN
      HAVING COUNT(department_id) = 1
     )
 ```
+
+[610. Triangle Judgement](https://leetcode.com/problems/triangle-judgement/)
+
+```sql
+SELECT x, y, z, 
+CASE WHEN x + y > z AND x + z > y AND y + z > x THEN 'Yes'
+ELSE 'No' END AS triangle
+FROM Triangle
+```
+
+[180. Consecutive Numbers
+](https://leetcode.com/problems/consecutive-numbers/)
+```sql
+WITH cte AS (
+  SELECT id, num, 
+    LEAD(num) OVER (ORDER BY id) AS next, 
+    LAG(num) OVER (ORDER BY id) AS prev
+  FROM Logs
+) 
+SELECT DISTINCT(num) AS ConsecutiveNums
+FROM cte
+WHERE num = next AND num = prev
+```
