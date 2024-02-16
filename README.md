@@ -458,3 +458,48 @@ FROM Department d
 JOIN RankedSalaries r ON r.departmentId = d.id
 WHERE r.salary_rank <=3;
 ```
+
+
+[1667. Fix Names in a Table](https://leetcode.com/problems/fix-names-in-a-table)
+```sql
+SELECT user_id, CONCAT(UPPER(LEFT(name, 1)), LOWER(RIGHT(name, LENGTH(name)-1))) AS name
+FROM Users
+ORDER BY user_id
+```
+
+[1527. Patients With a Condition](https://leetcode.com/problems/patients-with-a-condition)
+```sql
+SELECT patient_id, patient_name, conditions 
+FROM patients 
+WHERE conditions LIKE '% DIAB1%' 
+OR conditions LIKE 'DIAB1%'
+```
+
+[196. Delete Duplicate Emails](https://leetcode.com/problems/delete-duplicate-emails)
+```sql
+DELETE p
+FROM Person p, Person q
+WHERE p.id > q.id
+AND q.Email = p.Email
+```
+
+[176. Second Highest Salary](https://leetcode.com/problems/second-highest-salary)
+```sql
+SELECT
+(SELECT DISTINCT Salary 
+FROM Employee
+ORDER BY Salary DESC
+LIMIT 1 OFFSET 1)
+AS SecondHighestSalary
+
+-- HINT: subquery is used to return null if there is no SecondHighestSalary
+```
+
+
+ 
+[1517. Find Users With Valid E-Mails](https://leetcode.com/problems/find-users-with-valid-e-mails)
+```sql
+SELECT *
+FROM Users
+WHERE mail REGEXP '^[A-Za-z][A-Za-z0-9_\.\-]*@leetcode\\.com$'
+```
