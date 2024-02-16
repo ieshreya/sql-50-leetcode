@@ -427,3 +427,34 @@ WHEN product_id NOT IN
   WHERE change_date <= '2019-08-16'
 )
 ```
+
+
+[1978. Employees Whose Manager Left the Company](https://leetcode.com/problems/employees-whose-manager-left-the-company)
+```sql
+SELECT employee_id
+FROM Employees
+WHERE manager_id NOT IN (
+    SELECT employee_id 
+    FROM Employees
+)
+AND salary < 30000
+ORDER BY employee_id
+```
+
+[185. Department Top Three Salaries](https://leetcode.com/problems/department-top-three-salaries)
+```sql
+WITH RankedSalaries AS 
+(SELECT 
+    e.Id AS employee_id,
+    e.name AS employee,
+    e.salary,
+    e.departmentId,
+    DENSE_RANK() OVER (PARTITION BY e.departmentId ORDER BY e.salary DESC) AS salary_rank 
+FROM Employee e)
+SELECT d.name AS Department,
+r.employee,
+r.salary
+FROM Department d
+JOIN RankedSalaries r ON r.departmentId = d.id
+WHERE r.salary_rank <=3;
+```
