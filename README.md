@@ -516,3 +516,20 @@ UNION
 SELECT 'High Salary' AS category, SUM(IF(income>50000,1,0)) AS accounts_count 
 FROM Accounts
 ```
+
+[1204. Last Person to Fit in the Bus](https://leetcode.com/problems/last-person-to-fit-in-the-bus/)
+```sql
+-- 1000 kg limit
+-- name of last person
+
+WITH CTE AS (
+    SELECT person_name, weight, turn, SUM(weight) 
+    OVER(ORDER BY turn) AS total_weight
+    FROM Queue
+)
+SELECT person_name
+FROM cte
+WHERE total_weight <=1000
+ORDER BY total_weight DESC
+LIMIT 1;
+```
