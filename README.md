@@ -504,19 +504,6 @@ FROM Users
 WHERE mail REGEXP '^[A-Za-z][A-Za-z0-9_\.\-]*@leetcode\\.com$'
 ```
 
-[1907. Count Salary Categories](https://leetcode.com/problems/count-salary-categories/)
-```sql
-
-SELECT 'Low Salary' AS category, SUM(IF(income<20000,1,0)) AS accounts_count 
-FROM Accounts
-UNION
-SELECT 'Average Salary' AS category, SUM(IF(income>=20000 AND income<=50000,1,0)) AS accounts_count 
-FROM Accounts
-UNION
-SELECT 'High Salary' AS category, SUM(IF(income>50000,1,0)) AS accounts_count 
-FROM Accounts
-```
-
 [1204. Last Person to Fit in the Bus](https://leetcode.com/problems/last-person-to-fit-in-the-bus/)
 ```sql
 -- 1000 kg limit
@@ -533,3 +520,17 @@ WHERE total_weight <=1000
 ORDER BY total_weight DESC
 LIMIT 1;
 ```
+
+[1907. Count Salary Categories](https://leetcode.com/problems/count-salary-categories/)
+```sql
+
+SELECT 'Low Salary' AS category, SUM(IF(income<20000,1,0)) AS accounts_count 
+FROM Accounts
+UNION
+SELECT 'Average Salary' AS category, SUM(IF(income>=20000 AND income<=50000,1,0)) AS accounts_count 
+FROM Accounts
+UNION
+SELECT 'High Salary' AS category, SUM(IF(income>50000,1,0)) AS accounts_count 
+FROM Accounts
+```
+
