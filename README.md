@@ -559,3 +559,13 @@ WHERE DATE_FORMAT(order_date, '%Y-%m') = '2020-02'
 GROUP BY p.product_name
 HAVING SUM(o.unit) >= 100
 ```
+
+[1484. Group Sold Products By The Date](https://leetcode.com/problems/group-sold-products-by-the-date/)
+```sql
+SELECT sell_date, 
+COUNT(DISTINCT product) AS num_sold,
+GROUP_CONCAT(DISTINCT product) AS 'products' 
+FROM Activities
+GROUP BY sell_date
+ORDER BY sell_date
+```
