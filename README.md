@@ -545,3 +545,17 @@ ELSE (LEAD(student, 1, student) OVER (ORDER BY id))
 END AS 'Student'
 FROM Seat
 ```
+
+[1327. List the Products Ordered in a Period](https://leetcode.com/problems/list-the-products-ordered-in-a-period/)
+```sql
+-- name, amt
+-- >= 100 units, feb 2020
+
+SELECT p.product_name, SUM(o.unit) AS unit
+FROM Products p
+LEFT JOIN Orders o
+ON p.product_id = o.product_id
+WHERE DATE_FORMAT(order_date, '%Y-%m') = '2020-02'
+GROUP BY p.product_name
+HAVING SUM(o.unit) >= 100
+```
